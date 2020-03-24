@@ -32,10 +32,34 @@ router.put('/school/class',
   school.createClass
   );
 
+// /api/settings/school/class/delete
+router.delete('/school/class/delete',
+  authMiddleware,
+  school.classDelete
+  );
+
 // /api/settings/school/serch/:id
 router.get('/school/serch/:id',
   authMiddleware,
   school.serch
+  );
+
+// /api/settings/school/join/created/:id
+router.put('/school/join/created/:id',
+  authMiddleware,
+  school.schoolJoin
+  );
+
+// /api/settings/school/settings/access
+router.put('/school/settings/access',
+  authMiddleware,
+  school.studentAccess
+  );
+
+// /api/settings/school/join/delete
+router.delete('/school/join/delete',
+  authMiddleware,
+  school.joinDelete
   );
 
 // /api/settings/lesson/save/:id

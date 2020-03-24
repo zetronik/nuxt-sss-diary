@@ -30,10 +30,10 @@ module.exports.diary = function () {
 }
 
 module.exports.lesson = [
-    {dayLesson: [{lesson: '', homework: ''}]},
-    {dayLesson: [{lesson: '', homework: ''}]},
-    {dayLesson: [{lesson: '', homework: ''}]},
-    {dayLesson: [{lesson: '', homework: ''}]},
-    {dayLesson: [{lesson: '', homework: ''}]},
-    {dayLesson: [{lesson: '', homework: ''}]}
+    {dayLesson: [{lesson: '', homework: []}]},
+    {dayLesson: [{lesson: '', homework: []}]},
+    {dayLesson: [{lesson: '', homework: []}]},
+    {dayLesson: [{lesson: '', homework: []}]},
+    {dayLesson: [{lesson: '', homework: []}]},
+    {dayLesson: [{lesson: '', homework: []}]}
 ]

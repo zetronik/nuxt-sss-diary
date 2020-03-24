@@ -21,6 +21,7 @@ module.exports.user = async (req, res) => {
       });
       await user.save();
       candidate.user = user._id;
+      req.session.user.user = user._id
       await candidate.save();
       res.json({message: 'Данные записаны', user})
     }
@@ -40,6 +41,7 @@ module.exports.fetchUser = async (req, res) => {
       const fetchSchool = await School.findById(candidate.schoolId)
       if (fetchSchool) {
         school.id = fetchSchool._id
+        school.adminId = fetchSchool.adminId
         school.student = fetchSchool.student
         school.weekLesson = fetchSchool.weekLesson
         school.school = fetchSchool.school

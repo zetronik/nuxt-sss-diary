@@ -11,28 +11,40 @@
 
       <el-collapse-item title="Настройки школы" :name="3">
         <el-tabs v-model="activeTab">
-          <el-tab-pane label="Присоеденится" name="join">
-            <app-join />
+          <el-tab-pane  v-if="!access" label="Присоеденится" name="join">
+            <div v-if="schoolId" class="scholl-id">
+              <p>ID: {{schoolId}}</p>
+            </div>
+            <app-join 
+              :access="joinAccess"
+              :schoolId="schoolId"
+              :createSchool="createSchool"
+              @schoolId="schoolId = $event"
+              @school="createSchool = {...$event}"
+            />
           </el-tab-pane>
-          <el-tab-pane label="Создать класс" name="class">
+          <el-tab-pane v-if="access" label="Создать класс" name="class">
             <div v-if="schoolId" class="scholl-id">
               <p>ID: {{schoolId}}</p>
             </div>
             <app-class :id="id" :createSchool="createSchool" @schoolId="schoolId = $event"/>
           </el-tab-pane>
-          <el-tab-pane label="Создать школу" name="school">User</el-tab-pane>
-          <el-tab-pane label="Настройки" name="settings">User</el-tab-pane>
+          <el-tab-pane v-if="access" label="Создать школу" name="school">User</el-tab-pane>
+          <el-tab-pane label="Настройки" name="settings">
+            <app-settings :student="student" :access="access"/>
+          </el-tab-pane>
         </el-tabs>
       </el-collapse-item>
 
       <el-collapse-item title="Расписание уроков" :name="4">
         <el-row>
-          <el-col justify="center" :span="24">
-            <el-button type="primary" @click="reload" :disabled="lesson">Обновить</el-button>
-            <el-button type="success" @click="save" :disabled="lesson">Записать</el-button>
+          <el-col v-if="access" justify="center" :span="24">
+            <el-button type="primary" @click="reload">Обновить</el-button>
+            <el-button type="success" @click="save">Записать</el-button>
           </el-col>
         </el-row>
         <app-lessons 
+          :access="access"
           :weekLesson="weekLesson"
           @changeLesson="weekLesson = $event" />
       </el-collapse-item>
@@ -47,33 +59,36 @@
   import AppLessons from '../components/settings/Lessons'
   import AppClass from '../components/settings/school/Class'
   import AppJoin from '../components/settings/school/Join'
+  import AppSettings from '../components/settings/school/Settings'
     export default {
       components: {
         'app-user': AppUser,
         'app-auth': AppAuth,
         'app-lessons': AppLessons,
         'app-class': AppClass,
-        'app-join': AppJoin
+        'app-join': AppJoin,
+        'app-settings': AppSettings
       },
       middleware: ['admin-auth'],
       async asyncData ({store}) {
           const id = await store.getters['auth/getId'];
           const {user, school} = await store.dispatch('settings/fetchUser', id);
           console.log('user: ', user)
+          console.log('school: ', school)
           return {user, school, id}
       },
       data () {
           return {
-              activeName: 1,
+              activeName: 3,
               activeTab: 'join',
               schoolId: '',
               weekLesson: [
-                  {dayLesson: [{lesson: '', homework: ''}]},
-                  {dayLesson: [{lesson: '', homework: ''}]},
-                  {dayLesson: [{lesson: '', homework: ''}]},
-                  {dayLesson: [{lesson: '', homework: ''}]},
-                  {dayLesson: [{lesson: '', homework: ''}]},
-                  {dayLesson: [{lesson: '', homework: ''}]}
+                  {dayLesson: [{lesson: '', homework: []}]},
+                  {dayLesson: [{lesson: '', homework: []}]},
+                  {dayLesson: [{lesson: '', homework: []}]},
+                  {dayLesson: [{lesson: '', homework: []}]},
+                  {dayLesson: [{lesson: '', homework: []}]},
+                  {dayLesson: [{lesson: '', homework: []}]}
               ],
               userSettings: {
                 name: '',
@@ -88,7 +103,6 @@
           }
       },
       mounted () {
-        console.log(!!this.user)
         if (this.school.id) {
           this.schoolId = this.school.id
           this.createSchool.school = this.school.school
@@ -97,10 +111,29 @@
           this.weekLesson = this.school.weekLesson
           this.student = this.school.student
         }
+        if (this.user) {
+          this.userSettings = {...this.user}
+        }
       },
       computed: {
-        lesson () {
-          this.school.id ? true : false
+        joinAccess () {
+          if (this.userSettings.userId) {
+            return true
+          } else {
+            return false
+          }
+        },
+        access () {
+          if (this.userSettings.userId) {
+            if (this.school.adminId === this.userSettings.userId) {
+            this.activeTab = 'class'
+              return true
+            } else {
+              return false
+            }
+          } else {
+            return false
+          }
         }
       },
       methods: {
@@ -130,7 +163,7 @@
   }
   .scholl-id {
     width: 100%;
-    margin: 0 auto;
+    margin: 0 auto 2rem auto;
     padding: 1rem;
     background-color:#67C23A;
     border-radius: 30px;

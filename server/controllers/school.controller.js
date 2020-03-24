@@ -14,22 +14,77 @@ module.exports.createClass = async (req, res) => {
             res.status(201).json({message: 'Изменения внесены'})
         } else {
             const school = new School({
-                adminId: req.body.adminId,
+                adminId: req.session.user._id,
                 school: req.body.school,
                 level: req.body.level,
                 group: req.body.group,
                 weekLesson: lesson,
                 diary: diary ()
             })
-            const token = req.cookies['token-session']
-            const decoded = jwt.verify(token, keys.JWT);
-            const auth = await Auth.findById(decoded.userId)
-                auth.schoolId = school._id
-            
+            const auth = await Auth.findById(req.session.user._id)
+            auth.schoolId = school._id
+            req.session.user.schoolId = school._id
             await school.save()
             await auth.save()
             res.status(201).json({message: 'Класс создан', id: school._id})
         }
+    } catch (e) {
+        res.status(500).json(e)
+    }
+}
+
+module.exports.classDelete = async (req, res) => {
+    try {
+        await School.deleteOne({_id: req.session.user.schoolId})
+        await Auth.where({_id: req.session.user._id}).updateOne({$unset: {schoolId: req.session.user.schoolId}})
+        delete req.session.user.schoolId
+        res.status(201).json({message: 'Класс удален'})
+    } catch (e) {
+        console.log(e)
+        res.status(500).json(e)
+    }
+}
+
+module.exports.schoolJoin = async (req, res) => {
+    try {
+        const findUser = await User.findById(req.session.user.user)
+        const user = {
+            id: String(findUser._id),
+            name: findUser.name,
+            surname: findUser.surname,
+            access: false
+        }
+        const student = await School.findById(req.params.id)
+        const find = student.student.filter(s => s.id === String(req.session.user.user))
+        if (find.length > 0) {
+            res.status(201).json({message: 'Вы уже присутствуете  классе'})
+        } else {
+            await School.findById(req.params.id).updateOne({$push: {student: user}})
+            await Auth.findById(req.session.user._id).updateOne({$set: {schoolId: req.params.id}})
+            req.session.user.schoolId = req.params.id
+            res.status(201).json({message: 'Вы присоедененились к классу'})
+        }
+        
+    } catch (e) {
+        res.status(500).json(e)
+    }
+}
+
+module.exports.joinDelete = async (req, res) => {
+    try {
+        const s = await School.updateOne({_id: req.session.user.schoolId}, {$pull: {student: {id: String(req.session.user.user)}}})
+        await Auth.where({_id: req.session.user._id}).updateOne({$unset: {schoolId: req.session.user.schoolId}})
+        delete req.session.user.schoolId
+        res.status(201).json({message: 'Вы покинули класс'})
+    } catch (e) {
+        res.status(500).json(e)
+    }
+}
+
+module.exports.studentAccess = async (req, res) => {
+    try {
+        await School.updateOne({_id: req.session.user.schoolId, "student.id": req.body.id}, {$set: {"student.$.access": req.body.access}})
+        res.status(201).json({id: req.body.id, access: req.body.access})
     } catch (e) {
         res.status(500).json(e)
     }
@@ -40,9 +95,11 @@ module.exports.serch = async (req, res) => {
         const {_id, school, group, level} = await School.findById(req.params.id)
         if (_id) {
             res.json({_id, school, group, level})
+        } else {
+            res.json({message: 'Класс не найден или удален'})
         }
-    } catch (error) {
-        res.status(500).json(e)
+    } catch (e) {
+        res.json({message: 'Класс не найден или удален', e})
     }
 }
 
@@ -54,7 +111,7 @@ module.exports.save = async (req, res) => {
             await candidate.save()
             res.status(201).json({message: 'Расписание изменено'})
         }
-    } catch (error) {
+    } catch (e) {
         res.status(500).json(e)
     }
 }

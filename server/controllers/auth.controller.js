@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt-nodejs')
 const jwt = require('jsonwebtoken')
 const keys = require('../keys')
 const Auth = require('../models/auth.models')
-const Session = require('../models/session.models')
 
 module.exports.login = async (req, res) => {
   

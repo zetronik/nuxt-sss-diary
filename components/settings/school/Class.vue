@@ -21,7 +21,20 @@
 
   <el-form-item>
     <el-button :loading="loadingClass" type="primary" @click="onSubmit('ruleForm')">Записать</el-button>
+    <el-button :loading="loadingDelete" type="danger" @click="dialog = true">Удалить</el-button>
   </el-form-item>
+
+  <el-dialog
+  title="Внимание!"
+  :visible.sync="dialog"
+  width="30%"
+  center>
+    <span>Вы действительно желаете удалить класс?</span>
+    <span slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="deleteClass">Удалить</el-button>
+      <el-button @click="dialog = false">Отмена</el-button>
+    </span>
+  </el-dialog>
 
 </el-form>
 </template>
@@ -41,6 +54,8 @@
     data () {
       return {
         loadingClass: false,
+        loadingDelete: false,
+        dialog: false,
         schools: '',
         levels: [1,2,3,4,5,6,7,8,9,10,11,12],
         groups: ['А','Б','В','Г'],
@@ -90,6 +105,20 @@
           }
         })
         this.loadingClass = false
+      },
+      async deleteClass () {
+        this.dialog = false
+        this.loadingDelete = true
+        try {
+        const res = await this.$store.dispatch('settings/deleteClass')
+        this.ruleForm = { school: '', level: '', group: ''}
+        const id = ''
+        this.$emit('schoolId', id)
+        this.$message.success(res.message);
+        this.loadingDelete = false
+      } catch (error) {
+        this.loadingDelete = false
+      }
       }
     }
   }

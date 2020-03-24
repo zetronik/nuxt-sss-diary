@@ -24,7 +24,7 @@
 
             <el-table-column align="center" label="Задание">
               <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.work }}</span>
+                <span style="margin-left: 10px">{{ scope.row.work.lenght }}</span>
               </template>
             </el-table-column>
 
@@ -37,7 +37,7 @@
                   circle
                   type="primary"
                   size="medium"
-                  @click="handleEdit"
+                  @click="handleEdit(scope.row.work)"
                   icon="el-icon-edit"
                 />
               </template>
@@ -121,9 +121,6 @@
 </script>
 
 <style lang="scss" scoped>
-  .wrap {
-
-  }
   .accordion {
     width: 100%;
   }

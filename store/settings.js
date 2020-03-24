@@ -39,9 +39,41 @@ export const actions = {
       throw e
     }
   },
+  async deleteClass ({commit}) {
+    try {
+      return await this.$axios.$delete(`/api/settings/school/class/delete`);
+    } catch (e) {
+      commit('setError', e, {root: true});
+      throw e
+    }
+  },
   async serchSchool ({commit}, id) {
     try {
       return await this.$axios.$get(`/api/settings/school/serch/${id}`);
+    } catch (e) {
+      commit('setError', e, {root: true});
+      throw e
+    }
+  },
+  async schoolJoin ({commit}, id) {
+    try {
+      return await this.$axios.$put(`/api/settings/school/join/created/${id}`);
+    } catch (e) {
+      commit('setError', e, {root: true});
+      throw e
+    }
+  },
+  async joinDelete ({commit}) {
+    try {
+      return await this.$axios.$delete(`/api/settings/school/join/delete`);
+    } catch (e) {
+      commit('setError', e, {root: true});
+      throw e
+    }
+  },
+  async studentAccess ({commit}, user) {
+    try {
+      return await this.$axios.$put(`/api/settings/school/settings/access`, user);
     } catch (e) {
       commit('setError', e, {root: true});
       throw e

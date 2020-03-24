@@ -11,7 +11,7 @@ const settingsRouter = require('./routes/settings.routes');
 
 const keys = require('./keys');
 
-mongoose.connect(keys.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('MongoDB connected...'))
+mongoose.connect(keys.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }).then(() => console.log('MongoDB connected...'))
 	.catch(error => console.error(error));
 
 const store = new MongoStore({
