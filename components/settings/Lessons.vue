@@ -8,6 +8,7 @@
                     v-model="day.dayLesson[index].lesson"
                     :value="less.lesson"
                     class="margin1"
+                    :placeholder="index+1"
                     @change="diarySave(i, $event, index)"
                     :key="index">
                 </el-input>
@@ -40,14 +41,14 @@
             },
             access: {
                 type: Boolean,
-                required: true
             }
         },
         data () {
             return {
                 week: [
                     'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота',
-                ]
+                ],
+                lesson: {lesson: '', homework: []}
             }
         },
         methods: {
@@ -57,13 +58,13 @@
             },
             minusLesson (i) {
                 if (this.weekLesson[i].dayLesson.length === 1) {
-                    this.weekLesson[i].dayLesson[0] = {lesson: '', homework: ''}
+                    this.weekLesson[i].dayLesson[0] = {...this.lesson}
                 } else {
                     this.weekLesson[i].dayLesson.pop()
                 }
             },
             plusLesson (i) {
-                this.weekLesson[i].dayLesson.push({lesson: '', homework: ''})
+                this.weekLesson[i].dayLesson.push({...this.lesson})
             },
         }
     }

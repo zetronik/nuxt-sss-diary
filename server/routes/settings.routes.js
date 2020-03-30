@@ -62,8 +62,8 @@ router.delete('/school/join/delete',
   school.joinDelete
   );
 
-// /api/settings/lesson/save/:id
-router.put('/lesson/save/:id',
+// /api/settings/lesson/save
+router.put('/lesson/save',
   authMiddleware,
   school.save
   );

@@ -7,11 +7,9 @@
 <script>
 
 export default {
-  header () {
-    return {
-      title: 'School Diary'
-				}
-		},
+  head: {
+        title: `Главная | ${process.env.appName}`
+    },
 }
 </script>
 

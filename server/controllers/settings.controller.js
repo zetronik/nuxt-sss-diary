@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt-nodejs');
 const Auth = require('../models/auth.models');
 const User = require('../models/user.models');
 const School = require('../models/school.models')
+const Lesson = require('../models/lesson.models')
+const Student = require('../models/student.models')
 
 module.exports.user = async (req, res) => {
   try {
@@ -37,18 +39,14 @@ module.exports.fetchUser = async (req, res) => {
   try {
     if (candidate) {
       const user = await User.findById(candidate.user)
-      const school = {}
-      const fetchSchool = await School.findById(candidate.schoolId)
-      if (fetchSchool) {
-        school.id = fetchSchool._id
-        school.adminId = fetchSchool.adminId
-        school.student = fetchSchool.student
-        school.weekLesson = fetchSchool.weekLesson
-        school.school = fetchSchool.school
-        school.level = fetchSchool.level
-        school.group = fetchSchool.group
-      }   
-      res.json({user, school})
+      const school = await School.findById(candidate.schoolId)
+      if (school) {
+        const lesson = await Lesson.findById(candidate.lesson)
+        const student = await Student.findById(candidate.student)
+      res.json({user, school, lesson, student})
+      } else {
+        res.json({user, school: null})
+      }
     } else {
       const user = {
         name: '',

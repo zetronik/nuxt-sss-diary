@@ -97,6 +97,8 @@
               if (res.id) {
                 this.$emit('schoolId', res.id)
               }
+              const {school, lesson, student} = await this.$store.dispatch('settings/fetchUser')
+              this.$emit('fetchSchool', {school, lesson, student})
               this.$message.success(res.message);
               this.loadingClass = false
             } catch (error) {
@@ -114,6 +116,16 @@
         this.ruleForm = { school: '', level: '', group: ''}
         const id = ''
         this.$emit('schoolId', id)
+        this.$emit('fetchSchool', {
+                    school: null,
+                    lesson: lesson = [
+                    {dayLesson: [{lesson: '', homework: []}]},
+                    {dayLesson: [{lesson: '', homework: []}]},
+                    {dayLesson: [{lesson: '', homework: []}]},
+                    {dayLesson: [{lesson: '', homework: []}]},
+                    {dayLesson: [{lesson: '', homework: []}]},
+                    {dayLesson: [{lesson: '', homework: []}]}
+                    ], student: []})
         this.$message.success(res.message);
         this.loadingDelete = false
       } catch (error) {

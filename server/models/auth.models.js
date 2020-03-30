@@ -21,6 +21,18 @@ const authSchema = new Schema({
   schoolId: {
     type: Schema.Types.ObjectId,
     ref: 'schools'
+  },
+  student: {
+    type: Schema.Types.ObjectId,
+    ref: 'students'
+  },
+  lesson: {
+    type: Schema.Types.ObjectId,
+    ref: 'lessons'
+  },
+  diary: {
+    type: Schema.Types.ObjectId,
+    ref: 'diarys'
   }
 });
 

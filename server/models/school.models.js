@@ -14,13 +14,16 @@ const schoolSchema = new Schema({
         type: String,
     },
     student: {
-        type: Array,
+        type: Schema.Types.ObjectId,
+        ref: 'students'
     },
-    weekLesson: {
-        type: Array
+    lesson: {
+        type: Schema.Types.ObjectId,
+        ref: 'lessons'
     },
     diary: {
-        type: Object
+        type: Schema.Types.ObjectId,
+        ref: 'diarys'
     }
 })
 

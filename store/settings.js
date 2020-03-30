@@ -7,7 +7,7 @@ export const actions = {
       throw e
     }
   },
-  async fetchUser ({commit}, id) {
+  async fetchUser ({commit}) {
     try {
       return await this.$axios.$get(`/api/settings/user`);
     } catch (e) {
@@ -15,7 +15,7 @@ export const actions = {
       throw e
     }
   },
-  async changeEmail ({commit}, {id, login}) {
+  async changeEmail ({commit}, {login}) {
     try {
       await this.$axios.$put(`/api/settings/change/email`, {login});
     } catch (e) {
@@ -23,7 +23,7 @@ export const actions = {
       throw e
     }
   },
-  async changePass ({commit}, {id, pass}) {
+  async changePass ({commit}, {pass}) {
     try {
       await this.$axios.$put(`/api/settings/change/pass`, {pass});
     } catch (e) {
@@ -79,9 +79,9 @@ export const actions = {
       throw e
     }
   },
-  async save ({commit}, {id, weekLesson}) {
+  async save ({commit}, lesson) {
     try {
-      return await this.$axios.$put(`/api/settings/lesson/save/${id}`, weekLesson);
+      return await this.$axios.$put(`/api/settings/lesson/save`, lesson);
     } catch (e) {
       commit('setError', e, {root: true});
       throw e

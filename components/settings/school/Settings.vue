@@ -5,7 +5,7 @@
     <el-table-column
         label="Одноклассник">
         <template slot-scope="scope">
-        {{scope.row.name}} {{scope.row.surname}}
+        {{scope.row.surname}} {{scope.row.name}} 
         </template>
     </el-table-column>
     <el-table-column
@@ -13,7 +13,12 @@
         width="100"
         label="Доступ">
         <template slot-scope="scope">
+            <el-tooltip v-if="scope.row.access === 'admin'" class="item" effect="dark" content="Администратор" placement="left-start">
+                <i class="el-icon-s-custom root-icon"></i>
+            </el-tooltip>
+            
             <el-switch
+                v-else
                 :disabled="!access"
                 v-model="scope.row.access"
                 active-color="#13ce66"
@@ -31,11 +36,9 @@ export default {
     props: {
         student: {
             type: Array,
-            required: true
         },
         access: {
             type: Boolean,
-            required: true
         }
     },
     data() {
@@ -59,3 +62,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .root-icon {
+        font-size: 1.5rem;
+    }
+</style>

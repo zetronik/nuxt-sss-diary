@@ -98,7 +98,9 @@ export default {
             try {
                 this.loadingJoin = true
                 const res = await this.$store.dispatch('settings/schoolJoin', this.schoolId)
+                const {school, lesson, student} = await this.$store.dispatch('settings/fetchUser')
                 
+                this.$emit('fetchSchool', {school, lesson, student})
                 this.$message.success(res.message);
                 this.loadingJoin = false
                 this.schoolBtn = true
@@ -115,6 +117,16 @@ export default {
                 this.ruleForm.id = ''
                 this.school = null
                 this.$emit('school', {school: '', group: '', level: ''})
+                this.$emit('fetchSchool', {
+                    school: null,
+                    lesson: lesson = [
+                    {dayLesson: [{lesson: '', homework: []}]},
+                    {dayLesson: [{lesson: '', homework: []}]},
+                    {dayLesson: [{lesson: '', homework: []}]},
+                    {dayLesson: [{lesson: '', homework: []}]},
+                    {dayLesson: [{lesson: '', homework: []}]},
+                    {dayLesson: [{lesson: '', homework: []}]}
+                    ], student: []})
                 this.dialog = false
                 this.loadingJoin = false
                 this.schoolBtn = false

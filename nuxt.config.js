@@ -42,12 +42,26 @@ module.exports = {
   */
   modules: [
   // Doc: https://axios.nuxtjs.org/usage
+    ['@nuxtjs/pwa',
+      { icon: false },
+    ],
     '@nuxtjs/axios',
     'cookie-universal-nuxt',
   ],
   /*
   ** Build configuration
   */
+  workbox: {},
+  meta: {},
+  pwa: {
+    manifest: {
+      name: 'Школьный дневник',
+      lang: 'ru'
+    }
+  },
+  env: {
+    appName: 'Школьный дневник'
+  },
   build: {
     transpile: [/^element-ui/],
     /*

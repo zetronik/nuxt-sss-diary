@@ -1,11 +1,11 @@
 module.exports.diary = function () {
     const base = [
-        {dayLesson: [{lesson: '', homework: ''}]},
-        {dayLesson: [{lesson: '', homework: ''}]},
-        {dayLesson: [{lesson: '', homework: ''}]},
-        {dayLesson: [{lesson: '', homework: ''}]},
-        {dayLesson: [{lesson: '', homework: ''}]},
-        {dayLesson: [{lesson: '', homework: ''}]}
+        {dayLesson: [{lesson: '', homework: []}]},
+        {dayLesson: [{lesson: '', homework: []}]},
+        {dayLesson: [{lesson: '', homework: []}]},
+        {dayLesson: [{lesson: '', homework: []}]},
+        {dayLesson: [{lesson: '', homework: []}]},
+        {dayLesson: [{lesson: '', homework: []}]}
     ]
 
     const date = new Date()
@@ -26,7 +26,7 @@ module.exports.diary = function () {
         book[september] = base;
         september += 604800000;
     }
-    return {[year]: book}
+    return {...book}
 }
 
 module.exports.lesson = [

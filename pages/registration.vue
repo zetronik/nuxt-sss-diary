@@ -46,6 +46,11 @@
 
 <script>
     export default {
+        head () {
+          return {
+            title: `Регистрация | ${process.env.appName}`
+          }
+        },
         layout: 'empty',
         data() {
             const validatePass = (rule, value, callback) => {

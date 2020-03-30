@@ -11,7 +11,7 @@
 
       <el-collapse-item title="Настройки школы" :name="3">
         <el-tabs v-model="activeTab">
-          <el-tab-pane  v-if="!access" label="Присоеденится" name="join">
+          <el-tab-pane  v-if="!access || !!!school" label="Присоеденится" name="join">
             <div v-if="schoolId" class="scholl-id">
               <p>ID: {{schoolId}}</p>
             </div>
@@ -21,17 +21,18 @@
               :createSchool="createSchool"
               @schoolId="schoolId = $event"
               @school="createSchool = {...$event}"
+              @fetchSchool="fetchSchool($event)"
             />
           </el-tab-pane>
-          <el-tab-pane v-if="access" label="Создать класс" name="class">
+          <el-tab-pane v-if="access || !!!school" label="Создать класс" name="class">
             <div v-if="schoolId" class="scholl-id">
               <p>ID: {{schoolId}}</p>
             </div>
-            <app-class :id="id" :createSchool="createSchool" @schoolId="schoolId = $event"/>
+            <app-class :id="id" :createSchool="createSchool" @schoolId="schoolId = $event" @fetchSchool="fetchSchool($event)"/>
           </el-tab-pane>
           <el-tab-pane v-if="access" label="Создать школу" name="school">User</el-tab-pane>
           <el-tab-pane label="Настройки" name="settings">
-            <app-settings :student="student" :access="access"/>
+            <app-settings :student="studentList" :access="access"/>
           </el-tab-pane>
         </el-tabs>
       </el-collapse-item>
@@ -61,6 +62,11 @@
   import AppJoin from '../components/settings/school/Join'
   import AppSettings from '../components/settings/school/Settings'
     export default {
+      head () {
+        return {
+          title: `Настройки | ${process.env.appName}`
+        }
+      },
       components: {
         'app-user': AppUser,
         'app-auth': AppAuth,
@@ -71,11 +77,9 @@
       },
       middleware: ['admin-auth'],
       async asyncData ({store}) {
-          const id = await store.getters['auth/getId'];
-          const {user, school} = await store.dispatch('settings/fetchUser', id);
-          console.log('user: ', user)
-          console.log('school: ', school)
-          return {user, school, id}
+          const id = await store.getters['auth/getId']
+          const {user, school, lesson, student} = await store.dispatch('settings/fetchUser')
+          return {user, school, id, lesson, student}
       },
       data () {
           return {
@@ -99,17 +103,17 @@
                 level: '',
                 group: ''
               },
-              student: []
+              studentList: []
           }
       },
       mounted () {
-        if (this.school.id) {
-          this.schoolId = this.school.id
+        if (this.school) {
+          this.schoolId = this.school._id
           this.createSchool.school = this.school.school
           this.createSchool.level = this.school.level
           this.createSchool.group = this.school.group
-          this.weekLesson = this.school.weekLesson
-          this.student = this.school.student
+          this.weekLesson = this.lesson.lesson
+          this.studentList = this.student.student
         }
         if (this.user) {
           this.userSettings = {...this.user}
@@ -125,33 +129,39 @@
         },
         access () {
           if (this.userSettings.userId) {
-            if (this.school.adminId === this.userSettings.userId) {
-            this.activeTab = 'class'
-              return true
-            } else {
-              return false
+            if (this.school) {
+              if (this.school.adminId === this.userSettings.userId) {
+                this.activeTab = 'class'
+                return true
+              } else {
+                return false
+              }
             }
           } else {
-            return false
+            return true
           }
         }
       },
       methods: {
         reload () {
-          console.log(this.school)
         },
         async save () {
           try {
-            const school = {
-              id: this.school.id,
-              weekLesson: this.school.weekLesson
-            }
-            const res = await this.$store.dispatch('settings/save', school)
+            const res = await this.$store.dispatch('settings/save', {lesson: this.weekLesson})
             this.$message.success(res.message);
           } catch (error) {
             console.log(error)
           }
           
+        },
+        async fetchSchool (event) {
+          try {
+            this.school = event.school
+            this.weekLesson = event.lesson.lesson
+            this.studentList = event.student.student
+          } catch (error) {
+            console.log(error)
+          }
         }
       }
     }

@@ -8,6 +8,7 @@ const MongoStore = require('connect-mongodb-session')(session)
 
 const authRouter = require('./routes/auth.routes');
 const settingsRouter = require('./routes/settings.routes');
+const diaryRouter = require('./routes/diary.routes')
 
 const keys = require('./keys');
 
@@ -36,6 +37,7 @@ app.use(session({
 
 app.use('/api/auth', authRouter);
 app.use('/api/settings', settingsRouter);
+app.use('/api/diary', diaryRouter)
 
 
 
