@@ -82,27 +82,30 @@ module.exports.classDelete = async (req, res) => {
 module.exports.schoolJoin = async (req, res) => {
     try {
         const findUser = await User.findById(req.session.user.user)
-        const user = {
-            id: String(findUser._id),
-            name: findUser.name,
-            surname: findUser.surname,
-            access: false
-        }
-        const school = await School.findById(req.params.id)
-        const student = await Student.findById(school.student)
-        const find = student.student.filter(s => s.id === String(req.session.user.user))
-        if (find.length > 0) {
-            res.status(201).json({message: 'Вы уже присутствуете  классе'})
+        if (findUser) {
+            const user = {
+                id: String(findUser._id),
+                name: findUser.name,
+                surname: findUser.surname,
+                access: false
+            }
+            const school = await School.findById(req.params.id)
+            const student = await Student.findById(school.student)
+            const find = student.student.filter(s => s.id === String(req.session.user.user))
+            if (find.length > 0) {
+                res.status(201).json({message: 'Вы уже присутствуете  классе'})
+            } else {
+                await Student.findById(school.student).updateOne({$push: {student: user}})
+                await Auth.findById(req.session.user._id).updateOne({$set: {schoolId: req.params.id, diary: school.diary, student: school.student, lesson: school.lesson}})
+                req.session.user.schoolId = req.params.id
+                req.session.user.diary = school.diary
+                req.session.user.student = school.student
+                req.session.user.lesson = school.lesson
+                res.status(201).json({message: 'Вы присоедененились к классу'})
+            }
         } else {
-            await Student.findById(school.student).updateOne({$push: {student: user}})
-            await Auth.findById(req.session.user._id).updateOne({$set: {schoolId: req.params.id, diary: school.diary, student: school.student, lesson: school.lesson}})
-            req.session.user.schoolId = req.params.id
-            req.session.user.diary = school.diary
-            req.session.user.student = school.student
-            req.session.user.lesson = school.lesson
-            res.status(201).json({message: 'Вы присоедененились к классу'})
+            res.json({message: 'Заполните имя и фамилию в настройках пользователя'})
         }
-        
     } catch (e) {
         console.log(e)
         res.status(500).json(e)

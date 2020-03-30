@@ -1,9 +1,6 @@
 <template>
     <div class="wrap">
-      <div v-if="!diary" class="school">
-        <p>Сначала зарегестрируйте класс или присоеденитесь к классу</p>
-      </div>
-      <dir v-else>
+      <dir v-if="diary">
         <div class="diary-wrap mb">
         <span>
           <i class="el-icon-caret-left" @click="pastWeeks"></i>
@@ -54,7 +51,7 @@
           </el-table>
         </el-collapse-item>
       </el-collapse>
-      </dir>
+      
       
 
       <el-dialog
@@ -100,7 +97,10 @@
           <el-button type="primary" @click="saveDialog">Сохранить</el-button>
         </span>
       </el-dialog>
-
+      </dir>
+      <div v-else class="school">
+        <p>Сначала зарегестрируйте класс или присоеденитесь к классу</p>
+      </div>
     </div>
 </template>
 
