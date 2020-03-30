@@ -59,6 +59,9 @@ module.exports = {
       lang: 'ru'
     }
   },
+  axios: {
+    baseURL: process.env.BASE_URL || 'http://localhost:3000'
+  },
   env: {
     appName: 'Школьный дневник'
   },
