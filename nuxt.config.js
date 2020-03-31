@@ -42,9 +42,7 @@ module.exports = {
   */
   modules: [
   // Doc: https://axios.nuxtjs.org/usage
-    ['@nuxtjs/pwa',
-      { icon: false },
-    ],
+    '@nuxtjs/pwa',
     '@nuxtjs/axios',
     'cookie-universal-nuxt',
   ],
@@ -54,6 +52,9 @@ module.exports = {
   workbox: {},
   meta: {},
   pwa: {
+    icon: {
+      iconSrc: '@/assets/icon.png'
+    },
     manifest: {
       name: 'Школьный дневник',
       lang: 'ru'
