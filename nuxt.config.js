@@ -53,7 +53,7 @@ module.exports = {
   meta: {},
   pwa: {
     icon: {
-      iconSrc: '@/assets/icon.png'
+      iconFileName: process.env.NODE_ENV==='staging' ? 'icon_dev.png': 'icon.png'
     },
     manifest: {
       name: 'Школьный дневник',
