@@ -2,6 +2,10 @@
     <el-row>
         <el-col class="lessons" v-for="(day, i) in weekLesson" :xs="24" :sm="12" :md="8" :lg="8" :xl="8" :key="i">
             <p>{{week[i]}}</p>
+            <div v-if="access" class="title margin1">
+                <el-button @click="minusLesson(i)" icon="el-icon-s-fold" circle></el-button>
+                <el-button @click="plusLesson(i)" icon="el-icon-s-unfold" circle></el-button>
+            </div>
             <div v-if="access">
                 <el-input 
                     v-for="(less, index) in day.dayLesson"
@@ -21,12 +25,6 @@
                 >
                     <p>{{less.lesson}}</p>
                 </div>
-                
-            </div>
-            
-            <div v-if="access" class="title margin1">
-                <el-button @click="minusLesson(i)" icon="el-icon-s-fold" circle></el-button>
-                <el-button @click="plusLesson(i)" icon="el-icon-s-unfold" circle></el-button>
             </div>
         </el-col>
     </el-row>
@@ -73,6 +71,7 @@
 <style lang="scss" scoped>
     .lessons {
         padding: 5px;
+        
         p {
             text-align: center;
             font-size: 1.5rem;

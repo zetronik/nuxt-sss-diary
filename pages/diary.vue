@@ -1,6 +1,6 @@
 <template>
     <div class="wrap">
-      <dir v-if="diary">
+      <dir v-if="diaryWrap">
         <div class="diary-wrap mb">
         <span>
           <i class="el-icon-caret-left" @click="pastWeeks"></i>
@@ -178,6 +178,9 @@
               return true
             }
           }
+        },
+        diaryWrap () {
+          this.diary ? true : false
         }
       },
       methods: {

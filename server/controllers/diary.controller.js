@@ -13,7 +13,7 @@ module.exports.fetchDiary = async (req, res) => {
         const student = studentFetch.student.filter(s => s.id === String(req.session.user.user))
         res.json({diary, user, student})
         } else {
-            res.json(diary = null)
+            res.json({diary: null})
         }
     } catch (e) {
         console.log(e)
