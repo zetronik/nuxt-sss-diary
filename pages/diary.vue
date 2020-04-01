@@ -180,7 +180,11 @@
           }
         },
         diaryWrap () {
-          this.diary ? true : false
+          if (!!this.diary) {
+            return true
+          } else {
+            return false
+          }
         }
       },
       methods: {
