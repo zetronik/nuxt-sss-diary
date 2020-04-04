@@ -41,7 +41,7 @@ module.exports.login = async (req, res) => {
 module.exports.registration = async (req, res) => {
   const candidate = await Auth.findOne({login: req.body.login})
   if (candidate) {
-    res.status(409).json({message: 'Такой login уже занят'})
+    res.status(409).json({message: 'Такой логин уже занят'})
   } else {
     const salt = bcrypt.genSaltSync(10);
     const user = new Auth({
@@ -49,7 +49,7 @@ module.exports.registration = async (req, res) => {
       password: bcrypt.hashSync(req.body.password, salt)
     })
     await user.save()
-    res.status(201).json(user)
+    res.status(201).json({message: 'Регистрация прошла успешно, можете войти', user})
   }
 }
 

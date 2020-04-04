@@ -38,7 +38,7 @@ export const actions = {
       throw e
     }
   },
-  async logout({commit}, formData) {
+  async logout({commit}) {
     try {
       await this.$axios.$get('/api/auth/logout')
       commit('clearToken')
@@ -50,7 +50,7 @@ export const actions = {
   },
   async createUser({commit}, formData) {
     try {
-      await this.$axios.$post('/api/auth/registration', formData)
+      return await this.$axios.$post('/api/auth/registration', formData)
     } catch (e) {
       commit('setError', e, {root: true});
       throw e

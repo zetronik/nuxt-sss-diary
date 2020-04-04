@@ -27,11 +27,6 @@
           <span>Войти</span>
         </el-menu-item>
 
-        <el-menu-item v-if="!login" index="/registration">
-          <i class="el-icon-user"></i>
-          <span>Регистрация</span>
-        </el-menu-item>
-
         <el-menu-item v-if="login" index="/diary">
           <i class="el-icon-reading"></i>
           <span>Дневник</span>

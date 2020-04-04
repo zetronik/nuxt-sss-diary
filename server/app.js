@@ -27,11 +27,18 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser())
 
+const expiryDate = new Date( Date.now() + 60 * 60 * 1000 )
 app.use(session({
 	secret: keys.SESSION_KEY,
 	resave: false,
 	saveUninitialized: false,
-	store
+	name: 'sessionId',
+	store,
+	// cookie: {
+	// 	httpOnly: true,
+	// 	domain: process.env.BASE_URL || 'http://localhost:3000',
+	// 	expires: expiryDate
+	// }
 }))
 
 
