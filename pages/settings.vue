@@ -121,7 +121,7 @@
       },
       computed: {
         joinAccess () {
-          if (this.userSettings.userId) {
+          if (this.school) {
             return true
           } else {
             return false
@@ -150,7 +150,6 @@
             const res = await this.$store.dispatch('settings/save', {lesson: this.weekLesson})
             this.$message.success(res.message);
           } catch (error) {
-            console.log(error)
           }
           
         },
@@ -160,7 +159,6 @@
             this.weekLesson = event.lesson.lesson
             this.studentList = event.student.student
           } catch (error) {
-            console.log(error)
           }
         }
       }

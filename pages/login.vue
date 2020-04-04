@@ -92,7 +92,7 @@
               if (value === '') {
                 callback(new Error('Повторите пароль'));
               } else if (value !== this.registration.password) {
-                callback(new Error('Два пароля не совпадают'));
+                callback(new Error('Пароли не совпадают'));
               } else {
                 callback();
               }

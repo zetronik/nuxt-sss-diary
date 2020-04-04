@@ -7,7 +7,7 @@
         middleware: ['admin-auth'],
         beforeCreate() {
             this.$store.dispatch('auth/logout');
-            this.$router.push('/')
+            this.$router.push('/login')
         }
     }
 </script>

@@ -20,20 +20,16 @@
             border
             :data="day.dayLesson"
             style="width: 100%">
-
             <el-table-column align="center" label="Урок">
               <template slot-scope="scope">
                 <span style="margin-left: 10px">{{ scope.row.lesson }}</span>
               </template>
             </el-table-column>
-
             <el-table-column align="center" label="Задание">
               <template slot-scope="scope">
                 <i v-for="n in scope.row.homework.length" class="el-icon-s-management" :key="n"></i>
-                <!-- <span style="margin-left: 10px">{{ scope.row.homework.length }}</span> -->
               </template>
             </el-table-column>
-
             <el-table-column
               width="60px"
               align="right"

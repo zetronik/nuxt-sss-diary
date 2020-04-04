@@ -24,13 +24,7 @@ export const actions = {
   async login({commit, dispatch}, formData) {
     try {
       const id = await this.$axios.$post('/api/auth/login', formData)
-      const cookieStr = process.browser
-      ? document.cookie
-      : this.app.context.req.headers.cookie;
-
-      const cookies = Cookie.parse(cookieStr || '') || {};
-      const token = cookies['token-session'];
-      const jwtData = jwtDecode(token)
+      const token =  this.app.$cookies.get('token-session')
       dispatch('setId', id)
       dispatch('setToken', token)
     } catch (e) {
@@ -64,12 +58,7 @@ export const actions = {
   },
   async autoLogin ({dispatch, commit}) {
     try {
-      const cookieStr = process.browser
-        ? document.cookie
-        : this.app.context.req.headers.cookie;
-        const cookies = Cookie.parse(cookieStr || '') || {};
-        const token =  cookies['token-session'];
-        
+      const token =  this.app.$cookies.get('token-session')
       if (token) {
         const jwtData = jwtDecode(token)
         dispatch('setId', jwtData.userId)
