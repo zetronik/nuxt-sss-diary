@@ -7,6 +7,7 @@
 <script>
 
 export default {
+  auth: false,
   head: {
         title: `Главная | ${process.env.appName}`
     },

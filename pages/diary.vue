@@ -122,7 +122,6 @@
         title: `Мой дневник | ${process.env.appName}`
       }
     },
-    middleware: ['admin-auth'],
     async asyncData ({store}) {
           const {diary, user, student } = await store.dispatch('diary/fetchDiary', start)
           return {diary, user, student}

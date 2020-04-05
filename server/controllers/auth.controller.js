@@ -4,18 +4,17 @@ const keys = require('../keys')
 const Auth = require('../models/auth.models')
 
 module.exports.login = async (req, res) => {
-  
   try {
     const candidate = await Auth.findOne({login: req.body.login})
       if (candidate) {
         const isPasswordCorrect = bcrypt.compareSync(req.body.password, candidate.password)
         if (isPasswordCorrect) {
-          const token = jwt.sign({
+          const accessToken = jwt.sign({
             login: candidate.login,
             userId: candidate._id
           }, keys.JWT)
           req.session.user = candidate
-          req.session.token = token
+          req.session.token = accessToken
           req.session.isAutintificate = true
           req.session.save(err => {
             if (err) {
@@ -24,8 +23,8 @@ module.exports.login = async (req, res) => {
           })
           candidate.session = req.sessionID
           await candidate.save()
-          res.cookie('token-session', token)
-          res.json(candidate._id)
+          res.cookie('token-session', accessToken)
+          res.json({ token: { accessToken } })
           } else {
             res.status(404).json({message: 'Пользователь не найден'})
           }
@@ -39,6 +38,7 @@ module.exports.login = async (req, res) => {
 }
 
 module.exports.registration = async (req, res) => {
+  console.log(req.body)
   const candidate = await Auth.findOne({login: req.body.login})
   if (candidate) {
     res.status(409).json({message: 'Такой логин уже занят'})
@@ -53,10 +53,21 @@ module.exports.registration = async (req, res) => {
   }
 }
 
+module.exports.user = (req, res) => {
+  try {
+    const user = req.session.user
+    delete user.password
+    res.json({ user: user })
+  } catch (e) {
+    res.status(500).json(e)
+      throw e
+  }
+}
+
 module.exports.logout = (req, res) => {
   try {
     req.session.destroy()
-    res.redirect('/')
+    res.json({status: "OK"})
   } catch (e) {
     res.status(500).json(e)
       throw e

@@ -22,22 +22,22 @@
           <span>Главная</span>
         </el-menu-item>
 
-        <el-menu-item v-if="!login" index="/login">
+        <el-menu-item v-if="!isLogin" index="/login">
           <i class="el-icon-key"></i>
           <span>Войти</span>
         </el-menu-item>
 
-        <el-menu-item v-if="login" index="/diary">
+        <el-menu-item v-if="isLogin" index="/diary">
           <i class="el-icon-reading"></i>
           <span>Дневник</span>
         </el-menu-item>
 
-        <el-menu-item v-if="login" index="/settings">
+        <el-menu-item v-if="isLogin" index="/settings">
           <i class="el-icon-setting"></i>
           <span>Настройки</span>
         </el-menu-item>
 
-        <el-menu-item v-if="login" index="/logout">
+        <el-menu-item v-if="isLogin" index="/logout">
           <i class="el-icon-switch-button"></i>
           <span>Выход</span>
         </el-menu-item>
@@ -55,12 +55,9 @@
             };
         },
         computed: {
-            login () {
-                return this.$store.getters['auth/isAuthenticated']
+            isLogin () {
+              return this.$auth.loggedIn
             }
-        },
-        mounted () {
-            const login = this.$store.getters['auth/isAuthenticated']
         },
         methods: {
             handleClick () {

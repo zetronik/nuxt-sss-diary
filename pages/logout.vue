@@ -5,8 +5,8 @@
 <script>
     export default {
         middleware: ['admin-auth'],
-        beforeCreate() {
-            this.$store.dispatch('auth/logout');
+        async beforeCreate() {
+            await this.$auth.logout()
             this.$router.push('/login')
         }
     }

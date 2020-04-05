@@ -156,14 +156,10 @@
               if (valid) {
                 this.loading = true;
                 try {
-                  const formData = {
-                    login: this.login.login,
-                    password: this.login.password
-                  };
-                  await this.$store.dispatch('auth/login', formData);
+                  const res = await this.$auth.loginWith('local', {data: this.login})
                   this.$router.push('/diary')
                 } catch (e) {
-                    this.loading = false
+                  this.loading = false
                 }
               }
             })
@@ -173,15 +169,15 @@
               if (valid) {
                 this.loading = true;
                 try {
-                  const formData = {
+                  const data = {
                     login: this.registration.login,
                     password: this.registration.password
                   };
-                  const res = await this.$store.dispatch('auth/createUser', formData);
+                  const res = await this.$axios.$post('/api/auth/registration', data)
                   this.$message.success(res.message);
                   this.loading = false
                   this.activeName = 'login'
-                  this.login = {...formData}
+                  this.login = {...data}
                 } catch (e) {
                   this.loading = false
                 }

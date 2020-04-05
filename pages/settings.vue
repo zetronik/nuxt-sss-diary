@@ -75,11 +75,9 @@
         'app-join': AppJoin,
         'app-settings': AppSettings
       },
-      middleware: ['admin-auth'],
       async asyncData ({store}) {
-          const id = await store.getters['auth/getId']
-          const {user, school, lesson, student} = await store.dispatch('settings/fetchUser')
-          return {user, school, id, lesson, student}
+          const {id, user, school, lesson, student} = await store.dispatch('settings/fetchUser')
+          return {id, user, school, lesson, student}
       },
       data () {
           return {

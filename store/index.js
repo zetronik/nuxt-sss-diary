@@ -4,7 +4,7 @@ export const state = () => ({
 
 export const actions = {
   async nuxtServerInit({getters}) {
-    await getters['auth/isAuthenticated']
+    //await getters['auth/isAuthenticated']
   }
 };
 

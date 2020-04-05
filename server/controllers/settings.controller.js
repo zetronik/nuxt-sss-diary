@@ -35,7 +35,7 @@ module.exports.user = async (req, res) => {
 module.exports.fetchUser = async (req, res) => {
 
   const candidate = await Auth.findById(req.session.user._id);
-  
+  const id = candidate._id
   try {
     if (candidate) {
       const user = await User.findById(candidate.user)
@@ -43,16 +43,16 @@ module.exports.fetchUser = async (req, res) => {
       if (school) {
         const lesson = await Lesson.findById(candidate.lesson)
         const student = await Student.findById(candidate.student)
-      res.json({user, school, lesson, student})
+      res.json({id, user, school, lesson, student})
       } else {
-        res.json({user, school: null})
+        res.json({id, user, school: null})
       }
     } else {
       const user = {
         name: '',
         surname: ''
       }
-      res.json(user)
+      res.json(id, user)
     }
   } catch (e) {
     res.status(500).json(e)
