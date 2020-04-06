@@ -1,6 +1,7 @@
 <template>
-<div class="login-wrap">
+<div class="auth-wrap">
   <el-card
+    class="auth"
     shadow="always"
     style="max-width: 500px;min-width: 300px"
   >
@@ -189,10 +190,15 @@
 </script>
 
 <style lang="scss" scoped>
-  .login-wrap {
+  .auth-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .auth {
+    background-color:#94DBDB;
+    border: #94DBDB;
+    border-radius: 2%;
   }
   .btn {
     display: flex;

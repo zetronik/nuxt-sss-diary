@@ -37,7 +37,7 @@
           <span>Настройки</span>
         </el-menu-item>
 
-        <el-menu-item v-if="isLogin" index="/logout">
+        <el-menu-item v-if="isLogin" @click="logout">
           <i class="el-icon-switch-button"></i>
           <span>Выход</span>
         </el-menu-item>
@@ -62,6 +62,10 @@
         methods: {
             handleClick () {
                 this.drawer = !this.drawer
+            },
+            async logout () {
+              await this.$auth.logout()
+              this.$router.push('/login')
             }
         }
     }

@@ -15,7 +15,10 @@
         <el-button type="primary" @click="save">Сохранить<i class="el-icon-upload el-icon-right"></i></el-button>
       </div>
       <el-collapse class="accordion" v-model="activeName" accordion>
-        <el-collapse-item v-for="(day, w) in diary"  :title="weeks[w]" :name="w+1" :key="w">
+        <el-collapse-item class="title" v-for="(day, w) in diary"  :title="weeks[w]" :name="w+1" :key="w">
+          <template slot="title">
+            <h4 class="title">{{weeks[w]}}</h4>
+          </template>
           <el-table
             border
             :data="day.dayLesson"
@@ -280,8 +283,13 @@
 </script>
 
 <style lang="scss" scoped>
+  .title {
+    text-align: center;
+    inline-size: -webkit-fill-available;
+  }
   .accordion {
     width: 100%;
+    
   }
   .diary-wrap {
     width: 100%;

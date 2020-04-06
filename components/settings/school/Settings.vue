@@ -3,12 +3,14 @@
     :data="student"
     style="width: 100%">
     <el-table-column
+        sortable
         label="Одноклассник">
         <template slot-scope="scope">
         {{scope.row.surname}} {{scope.row.name}} 
         </template>
     </el-table-column>
     <el-table-column
+        sortable
         fixed="right"
         width="100"
         label="Доступ">

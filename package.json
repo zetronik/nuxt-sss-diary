@@ -1,8 +1,8 @@
 {
   "name": "school_diary",
   "version": "1.0.0",
-  "description": "My polished Nuxt.js project",
-  "author": "Andrey Omelchenko &lt;zetronik@gmail.com&gt;",
+  "description": "School diary for student",
+  "author": "Andrey Omelchenko [zetronik@gmail.com]",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",

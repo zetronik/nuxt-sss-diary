@@ -1,4 +1,4 @@
-# session
+# Nuxt School Diary
 
 > My polished Nuxt.js project
 
